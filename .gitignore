@@ -1,3 +1,6 @@
+backend/MetricsBackend
+frontend/MetricsFrontend
+
 .git/
 .svn/
 .hg/
