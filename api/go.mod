@@ -1,3 +1,3 @@
-module github.com/PxnPub/pxnMetrics/MetricsBackendAPI/api
+module github.com/PxnPub/pxnMetrics/MetricsBackendAPI
 
 go 1.24.2

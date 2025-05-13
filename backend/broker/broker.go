@@ -7,7 +7,7 @@ import(
 	Net      "net"
 	RPC      "net/rpc"
 	UtilsNet "github.com/PxnPub/pxnGoUtils/net"
-	ShardAPI "github.com/PxnPub/pxnMetrics/MetricsBackendAPI/api/shardapi"
+	ShardAPI "github.com/PxnPub/pxnMetrics/MetricsBackendAPI/shardapi"
 );
 
 
