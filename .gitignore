@@ -1,5 +1,7 @@
 backend/MetricsBackend
 frontend/MetricsFrontend
+shard/MetricsBackendShard
+testgen/MetricsTestGen
 
 .git/
 .svn/

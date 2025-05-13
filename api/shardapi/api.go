@@ -2,5 +2,8 @@ package shardapi;
 
 
 
-type ShardAPI struct{
+type Query struct {
+}
+
+type QueryReply struct {
 }

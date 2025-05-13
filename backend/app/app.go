@@ -15,6 +15,6 @@ const BatchInterval = "5s";
 func Main(trapc *TrapC.TrapC) {
 	// TCP:99xx | shard rpc servers
 	//broker :=
-	ShardBroker.New(NumShards, BatchInterval);
+	ShardBroker.New(trapc, NumShards, BatchInterval);
 	// UDP:9001 | frontend rpc server
 }
