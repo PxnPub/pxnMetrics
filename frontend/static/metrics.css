@@ -1,0 +1,46 @@
+
+body {
+	background-color: #E3DEE3;
+}
+
+
+
+.navbar {
+	background-color: #274690;
+}
+
+.navbar-brand {
+	color: white;
+}
+.navbar-brand:hover {
+	color: gold;
+}
+
+.nav-link {
+	color: #EDE9ED;
+}
+
+
+
+.navbar-nav .nav-item {
+	transition: background-color 0.3s, color 0.3s;
+	padding-left:  2px;
+	padding-right: 2px;
+}
+
+.navbar-nav button.nav-link {
+	border-radius: 0.6rem;
+}
+.navbar-nav button.nav-link:hover {
+	box-shadow: inset 0px 0px 5px black;
+	background-color: #1B264F;
+	color: gold;
+}
+
+.navbar-nav button.active {
+	background-color: #1F3770;
+	color: white !important;
+}
+.navbar-nav button.active:hover {
+	color: gold !important;
+}
