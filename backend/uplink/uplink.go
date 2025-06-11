@@ -36,7 +36,10 @@ func (uplink *UpLink) Start() error {
 	defer uplink.MuxState.Unlock();
 	if uplink.Bind == "" { return Errors.New("Bind address is required"); }
 	// register api
-	FrontAPI.RegisterWebFrontAPIServer(uplink.RPC.Server, &API_Status{});
+	FrontAPI.RegisterWebFrontAPIServer(
+		uplink.RPC.Server,
+		&API_Front{},
+	);
 	return uplink.RPC.Start();
 }
 

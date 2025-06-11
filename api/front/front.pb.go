@@ -59,7 +59,7 @@ func (*Empty) Descriptor() ([]byte, []int) {
 
 type StatusJSON struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Json          string                 `protobuf:"bytes,1,opt,name=json,proto3" json:"json,omitempty"`
+	Data          string                 `protobuf:"bytes,1,opt,name=Data,proto3" json:"Data,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -94,9 +94,9 @@ func (*StatusJSON) Descriptor() ([]byte, []int) {
 	return file_front_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *StatusJSON) GetJson() string {
+func (x *StatusJSON) GetData() string {
 	if x != nil {
-		return x.Json
+		return x.Data
 	}
 	return ""
 }
@@ -109,7 +109,7 @@ const file_front_proto_rawDesc = "" +
 	"\x05Empty\" \n" +
 	"\n" +
 	"StatusJSON\x12\x12\n" +
-	"\x04json\x18\x01 \x01(\tR\x04json2A\n" +
+	"\x04Data\x18\x01 \x01(\tR\x04Data2A\n" +
 	"\vWebFrontAPI\x122\n" +
 	"\x0fFetchStatusJSON\x12\f.front.Empty\x1a\x11.front.StatusJSONB(Z&github.com/PxnPub/pxnMetrics/api/frontb\x06proto3"
 

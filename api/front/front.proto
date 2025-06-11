@@ -11,5 +11,5 @@ service WebFrontAPI {
 message Empty{}
 
 message StatusJSON {
-	string json = 1;
+	string Data = 1;
 }
