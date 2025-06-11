@@ -2,8 +2,8 @@ package pages;
 
 import(
 	Gorilla   "github.com/gorilla/mux"
-	UtilsWeb  "github.com/PxnPub/pxnGoUtils/utils/web"
-	WebServer "github.com/PxnPub/pxnGoUtils/service/web"
+	HTML      "github.com/PxnPub/PxnGoCommon/utils/html"
+	WebServer "github.com/PxnPub/PxnGoCommon/utils/net/web"
 	WebLink   "github.com/PxnPub/pxnMetrics/frontend/weblink"
 );
 
@@ -19,7 +19,7 @@ func New(router *Gorilla.Router, weblink *WebLink.WebLink) *Pages {
 	pages := Pages{
 		WebLink: weblink,
 	};
-	WebServer.AddRouteStatic(router);
+	WebServer.AddStaticRoute(router);
 	router.HandleFunc("/",            pages.PageWeb_Global);
 	router.HandleFunc("/wiki/",       pages.PageWeb_Wiki  );
 	router.HandleFunc("/status/",     pages.PageWeb_Status);
@@ -30,8 +30,8 @@ func New(router *Gorilla.Router, weblink *WebLink.WebLink) *Pages {
 
 
 
-func (pages *Pages) GetBuilder() *UtilsWeb.Builder {
-	return UtilsWeb.NewBuilder().
+func (pages *Pages) GetBuilder() *HTML.Builder {
+	return HTML.NewBuilder().
 		WithBootstrap().
 		WithBootstrapIcons().
 		SetFavIcon("/static/line-chart.ico").

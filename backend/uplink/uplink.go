@@ -5,6 +5,7 @@ import(
 	Errors   "errors"
 	Service  "github.com/PxnPub/PxnGoCommon/service"
 	UtilsRPC "github.com/PxnPub/PxnGoCommon/utils/net/rpc"
+	FrontAPI "github.com/PxnPub/pxnMetrics/api/front"
 );
 
 
@@ -34,10 +35,8 @@ func (uplink *UpLink) Start() error {
 	uplink.MuxState.Lock();
 	defer uplink.MuxState.Unlock();
 	if uplink.Bind == "" { return Errors.New("Bind address is required"); }
-//TODO
-//	uplink.RPC.UserFunc = func(user string) bool {
-//		return (user == "lop");
-//	};
+	// register api
+	FrontAPI.RegisterWebFrontAPIServer(uplink.RPC.Server, &API_Status{});
 	return uplink.RPC.Start();
 }
 

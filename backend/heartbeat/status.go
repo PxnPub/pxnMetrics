@@ -6,20 +6,16 @@ import(
 //	Time "time"
 //	JSON "encoding/json"
 	// api
-//	WebAPI "github.com/PxnPub/pxnMetrics/api/webapi"
-	_ "github.com/PxnPub/pxnMetrics/api/webapi"
+//	FrontAPI "github.com/PxnPub/pxnMetrics/api/front"
 );
 
 
 
-func (heart *HeartBeat) FetchStatusJSON() []byte {
+func (heart *HeartBeat) FetchStatusJSON() string {
 
 
+return "OK";
 
-
-
-
-	return []byte("{}");
 //	now := Time.Now();
 //TODO
 //	timeout_online, _ := Time.ParseDuration("5s");

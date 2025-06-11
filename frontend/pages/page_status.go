@@ -1,15 +1,15 @@
 package pages;
 
 import(
-	HTTP     "net/http"
-	Template "html/template"
-	UtilsWeb "github.com/PxnPub/pxnGoUtils/utils/web"
+	HTTP      "net/http"
+	Template  "html/template"
+	HTML      "github.com/PxnPub/PxnGoCommon/utils/html"
 );
 
 
 
 func (pages *Pages) PageWeb_Status(out HTTP.ResponseWriter, in *HTTP.Request) {
-	UtilsWeb.SetContentType(out, "html");
+	HTML.SetContentType(out, "html");
 	build := pages.GetBuilder().
 		AddBotJS("/static/status.js");
 //TODO
@@ -35,8 +35,6 @@ build.IsDev = true;
 
 
 func (pages *Pages) PageAPI_Status(out HTTP.ResponseWriter, in *HTTP.Request) {
-	UtilsWeb.SetContentType(out, "json");
-	// fetch from broker
-	data := pages.WebLink.FetchStatusJSON();
-	out.Write(data);
+	HTML.SetContentType(out, "json");
+	out.Write(pages.WebLink.FetchStatusJSON());
 }

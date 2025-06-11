@@ -1,15 +1,15 @@
 package pages;
 
 import(
-	HTTP     "net/http"
-	Template "html/template"
-	UtilsWeb "github.com/PxnPub/pxnGoUtils/utils/web"
+	HTTP      "net/http"
+	Template  "html/template"
+	HTML      "github.com/PxnPub/PxnGoCommon/utils/html"
 );
 
 
 
 func (pages *Pages) PageWeb_Wiki(out HTTP.ResponseWriter, in *HTTP.Request) {
-	UtilsWeb.SetContentType(out, "html");
+	HTML.SetContentType(out, "html");
 	build := pages.GetBuilder();
 //TODO
 build.IsDev = true;

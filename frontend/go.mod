@@ -1,12 +1,10 @@
 module github.com/PxnPub/pxnMetrics/frontend
 
-go 1.24.3
+go 1.24.4
 
 require (
-	github.com/PxnPub/PxnGoCommon/service v0.0.0-20250608182159-fbaf2057dadd
-	github.com/PxnPub/PxnGoCommon/utils v0.0.0-20250608182159-fbaf2057dadd
-	github.com/PxnPub/pxnGoUtils/service v0.0.0-20250603083811-4b5cd1d7d86d
-	github.com/PxnPub/pxnGoUtils/utils v0.0.0-20250603083811-4b5cd1d7d86d
+	github.com/PxnPub/PxnGoCommon/service v0.0.0-20250611083154-1e64a237bf4d
+	github.com/PxnPub/PxnGoCommon/utils v0.0.0-20250611083154-1e64a237bf4d
 	github.com/gorilla/mux v1.8.1
 )
 

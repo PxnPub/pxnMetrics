@@ -1,0 +1,15 @@
+
+syntax = "proto3";
+option go_package = "github.com/PxnPub/pxnMetrics/api/front";
+package front;
+
+
+service WebFrontAPI {
+	rpc FetchStatusJSON(Empty) returns (StatusJSON);
+}
+
+message Empty{}
+
+message StatusJSON {
+	string json = 1;
+}

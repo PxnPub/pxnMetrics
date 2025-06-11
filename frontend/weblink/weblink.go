@@ -1,7 +1,8 @@
 package weblink;
 
 import(
-	Log      "log"
+//	Log      "log"
+	Fmt      "fmt"
 	Sync     "sync"
 	Errors   "errors"
 	Service  "github.com/PxnPub/PxnGoCommon/service"
@@ -45,9 +46,14 @@ func (link *WebLink) Close() {
 
 
 func (link *WebLink) FetchStatusJSON() []byte {
-	data, err := link.RPC.Call("FetchStatusJSON");
-	if err != nil { Log.Printf("%s%s in FetchStatusJSON()",
-		UtilsRPC.LogPrefix, err); }
-	return []byte(data);
-//	return data.([]byte);
+	var reply string;
+	err := link.RPC.Client.Call("API_Status.FetchStatusJSON", "request", &reply);
+	if err != nil { panic(err); }
+Fmt.Printf("REPLY: %s\n", reply);
+	return []byte(reply);
 }
+//	data, err := link.RPC.Call("FetchStatusJSON");
+//	if err != nil { Log.Printf("%s%s in FetchStatusJSON()",
+//		UtilsRPC.LogPrefix, err); }
+//	return []byte(data);
+//	return data.([]byte);

@@ -3,13 +3,13 @@ package pages;
 import(
 	HTTP     "net/http"
 	Template "html/template"
-	UtilsWeb "github.com/PxnPub/pxnGoUtils/utils/web"
+	HTML     "github.com/PxnPub/PxnGoCommon/utils/html"
 );
 
 
 
 func (pages *Pages) PageWeb_Global(out HTTP.ResponseWriter, in *HTTP.Request) {
-	UtilsWeb.SetContentType(out, "html");
+	HTML.SetContentType(out, "html");
 	build := pages.GetBuilder();
 //TODO
 build.IsDev = true;
@@ -34,7 +34,7 @@ build.IsDev = true;
 
 
 func (pages *Pages) PageAPI_Global(out HTTP.ResponseWriter, in *HTTP.Request) {
-	UtilsWeb.SetContentType(out, "json");
+	HTML.SetContentType(out, "json");
 //	url, err := URL.ParseQuery(in.URL.RawQuery);
 //	if err != nil { panic(err); }
 	out.Write([]byte("{}"));
