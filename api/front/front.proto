@@ -1,8 +1,7 @@
+package front;
 
 syntax = "proto3";
 option go_package = "github.com/PxnPub/pxnMetrics/api/front";
-package front;
-
 
 service WebFrontAPI {
 	rpc FetchStatusJSON(Empty) returns (StatusJSON);
@@ -11,5 +10,5 @@ service WebFrontAPI {
 message Empty{}
 
 message StatusJSON {
-	string Data = 1;
+	[]byte Data = 1;
 }

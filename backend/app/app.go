@@ -65,8 +65,8 @@ func (app *AppBackend) Main() {
 	app.HeartBeat = HeartBeat.New(app.Service, num_shards);
 	// rpc server
 	app.UpLink = UtilsRPC.NewServer(app.Service, app.Bind);
-	app.API_Front = HeartBeat.NewFrontAPI(app.HeartBeat);
-	FrontAPI.RegisterWebFrontAPIServer(app.UpLink.RPC, app.API_Front);
+	app.FrontAPI = HeartBeat.NewFrontAPI(app.HeartBeat);
+	FrontAPI.RegisterWebFrontAPIServer(app.UpLink.RPC, app.FrontAPI);
 	// start things
 	if err := app.HeartBeat.Start(); err != nil { Log.Panic(err); }
 	if err := app.UpLink.Start();    err != nil { Log.Panic(err); }

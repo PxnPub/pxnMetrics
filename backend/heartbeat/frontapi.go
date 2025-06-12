@@ -3,6 +3,7 @@ package heartbeat;
 import(
 	Fmt      "fmt"
 	Context  "context"
+	JSON     "encoding/json"
 	FrontAPI "github.com/PxnPub/pxnMetrics/api/front"
 	WebAPI   "github.com/PxnPub/pxnMetrics/api/web"
 );
@@ -27,16 +28,16 @@ func (api *API_Front) FetchStatusJSON(ctx Context.Context,
 	json_shards := make([]WebAPI.StatusShard, api.Heart.NumShards);
 	for i, shard := range api.Heart.Shards {
 		json_shards[i] = WebAPI.StatusShard{
-			Name:      Fmt.Sprintf("Shard-%d", i),
-			LastSeen:  uint32(shard.LastSeen.Seconds() ),
-			LastBatch: uint32(shard.LastBatch.Seconds()),
-//BatchWaiting: uint32 (v.BatchWaiting       ),
-//QueueWaiting: uint32 (v.QueueWaiting       ),
-//ReqPerSec:    float32(v.ReqPerSec          ),
-//ReqPerMin:    float32(v.ReqPerMin          ),
-//ReqPerHour:   float32(v.ReqPerHour         ),
-//ReqPerDay:    float32(v.ReqPerDay          ),
-//ReqTotal:     uint64 (v.ReqTotal           ),
+			Name:         Fmt.Sprintf("Shard-%d", i),
+			LastSeen:     uint32 (shard.LastSeen.Unix() ),
+			LastBatch:    uint32 (shard.LastBatch.Unix()),
+			BatchWaiting: uint32 (shard.BatchWaiting    ),
+			QueueWaiting: uint32 (shard.QueueWaiting    ),
+			ReqPerSec:    float32(shard.ReqPerSec       ),
+			ReqPerMin:    float32(shard.ReqPerMin       ),
+			ReqPerHour:   float32(shard.ReqPerHour      ),
+			ReqPerDay:    float32(shard.ReqPerDay       ),
+			ReqTotal:     uint64 (shard.ReqTotal        ),
 		};
 		if shard.IsOnline { json_shards[i].Status = "Online";
 		} else {            json_shards[i].Status = "Offline" }
@@ -47,5 +48,5 @@ func (api *API_Front) FetchStatusJSON(ctx Context.Context,
 		},
 	);
 	if err != nil { return nil, err; }
-	return &FrontAPI.StatusJSON{ Data: json }, nil;
+	return &FrontAPI.StatusJSON{ Data: string(json) }, nil;
 }

@@ -3,10 +3,10 @@ module github.com/PxnPub/pxnMetrics/frontend
 go 1.24.4
 
 require (
-	github.com/PxnPub/PxnGoCommon/rpc v0.0.0-20250612185839-aefcc0611ce7
-	github.com/PxnPub/PxnGoCommon/service v0.0.0-20250612185839-aefcc0611ce7
-	github.com/PxnPub/PxnGoCommon/utils v0.0.0-20250612185839-aefcc0611ce7
-	github.com/PxnPub/pxnMetrics v0.0.0-20250612182911-ce48e2bef492
+	github.com/PxnPub/PxnGoCommon/rpc v0.0.0-20250612205418-df70c592a862
+	github.com/PxnPub/PxnGoCommon/service v0.0.0-20250612205418-df70c592a862
+	github.com/PxnPub/PxnGoCommon/utils v0.0.0-20250612205418-df70c592a862
+	github.com/PxnPub/pxnMetrics/api v0.0.0-20250612204722-98d500ec8b5f
 	github.com/gorilla/mux v1.8.1
 )
 

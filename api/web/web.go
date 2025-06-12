@@ -1,20 +1,21 @@
 package web;
 
-import(
-	Time "time"
-);
 
 
+type StatusAPI struct {
+	Shards []StatusShard `json:"Shards"`
+}
 
 type StatusShard struct {
-	Name         string
-	LastSeen     Time.Time
-	LastBatch    Time.Time
-	BatchWaiting uint32
-	QueueWaiting uint32
-	ReqPerSec    float32
-	ReqPerMin    float32
-	ReqPerHour   float32
-	ReqPerDay    float32
-	ReqTotal     uint64
+	Name         string  `json:"Name"`
+	Status       string  `json:"Status"`
+	LastSeen     uint32  `json:"LastSeen"`
+	LastBatch    uint32  `json:"LastBatch"`
+	BatchWaiting uint32  `json:"BatchWaiting"`
+	QueueWaiting uint32  `json:"QueueWaiting"`
+	ReqPerSec    float32 `json:"ReqPerSec"`
+	ReqPerMin    float32 `json:"ReqPerMin"`
+	ReqPerHour   float32 `json:"ReqPerHour"`
+	ReqPerDay    float32 `json:"ReqPerDay"`
+	ReqTotal     uint64  `json:"ReqTotal"`
 }
