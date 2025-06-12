@@ -7,7 +7,8 @@ import(
 	Service   "github.com/PxnPub/PxnGoCommon/service"
 	Flagz     "github.com/PxnPub/PxnGoCommon/utils/flagz"
 	WebServer "github.com/PxnPub/PxnGoCommon/utils/net/web"
-	BackLink  "github.com/PxnPub/pxnMetrics/frontend/backlink"
+	UtilsRPC  "github.com/PxnPub/PxnGoCommon/rpc"
+//	FrontAPI  "github.com/PxnPub/pxnMetrics/api/front"
 	Pages     "github.com/PxnPub/pxnMetrics/frontend/pages"
 );
 
@@ -15,6 +16,11 @@ import(
 
 type AppFrontend struct {
 	Version  string
+	Service  *Service.Service
+	BackLink *UtilsRPC.Client
+	WebServe *WebServer.WebServer
+	Bind     string
+	Remote   string
 }
 
 
@@ -29,28 +35,27 @@ func (app *AppFrontend) Main() {
 	service := Service.New();
 	service.Start();
 	// flags
-	var bind   string;
-	var broker string;
-	Flagz.String(&bind,   "bind",   WebServer.DefaultBindWeb);
-	Flagz.String(&broker, "broker", DefaultBrokerAddress    );
+	var flag_bind   string;
+	var flag_remote string;
+	Flagz.String(&flag_bind,   "bind",   WebServer.DefaultBindWeb);
+	Flagz.String(&flag_remote, "broker", DefaultBrokerAddress    );
 	Flag.Parse();
+	app.Bind   = flag_bind;
+	app.Remote = flag_remote;
 	// rpc to broker
-	backlink := BackLink.New(service, broker);
+	app.BackLink = UtilsRPC.NewClient(service, app.Remote);
 
-//	app.BackLink = UtilsRPC.NewBackLink(broker);
-
-
+//	client := FrontAPI.NewWebFrontAPIClient(app.BackLink.RPC);
 
 
 
-//	weblink := WebLink.New(service, broker);
 	// web server
-	webserv := WebServer.NewWebServer(bind);
-	webserv.WaitGroup = service.WaitGroup;
-	service.AddCloseable(webserv);
-	Pages.New(webserv.Router, backlink);
+	app.WebServe = WebServer.NewWebServer(app.Bind);
+	app.WebServe.WaitGroup = service.WaitGroup;
+	service.AddCloseable(app.WebServe);
+	Pages.New(app.WebServe.Router, app.BackLink);
 	// start things
-	if err := backlink.Start(); err != nil { Log.Panic(err); }
-	if err := webserv.Start();  err != nil { Log.Panic(err); }
+	if err := app.BackLink.Start(); err != nil { Log.Panic(err); }
+	if err := app.WebServe.Start();  err != nil { Log.Panic(err); }
 	service.WaitUntilEnd();
 }

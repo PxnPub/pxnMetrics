@@ -1,13 +1,15 @@
 package pages;
 
 import(
-//	Context  "context"
+	Fmt      "fmt"
 	HTTP     "net/http"
 	Template "html/template"
 	Context  "context"
+	JSON     "encoding/json"
+	Runtime  "runtime"
 	HTML     "github.com/PxnPub/PxnGoCommon/utils/html"
 	// api
-//	FrontAPI "github.com/PxnPub/pxnMetrics/api/front"
+	FrontAPI "github.com/PxnPub/pxnMetrics/api/front"
 );
 
 
@@ -40,18 +42,17 @@ build.IsDev = true;
 
 func (pages *Pages) PageAPI_Status(out HTTP.ResponseWriter, in *HTTP.Request) {
 	HTML.SetContentType(out, "json");
-	result, err := pages.Link.Client.FetchStatusJSON(
-		Context.Background(),
-		nil,
-	);
-	if err != nil { panic(err); }
-	out.Write([]byte(result.Data));
+	api := FrontAPI.NewWebFrontAPIClient(pages.Link.RPC);
+	result, err := api.FetchStatusJSON(Context.Background(), &FrontAPI.Empty{});
+	if err != nil {
+		trace := make([]byte, 1024);
+		n := Runtime.Stack(trace, true);
+		HTTP.Error(out,
+			Fmt.Sprintf("%s\n\n%s", err.Error(), trace[:n]),
+			HTTP.StatusInternalServerError,
+		);
+		return;
+	}
+	out.WriteHeader(HTTP.StatusOK)
+	JSON.NewEncoder(out).Encode(result.Data);
 }
-//	api := FrontAPI.NewWebFrontAPIClient(pages.BackLink.Client);
-//api.FetchStatusJSON(Context.Background(), &FrontAPI.Empty{});
-//	reply, err := api.FetchStatusJSON(Context.Background(), &FrontAPI.Empty{});
-//	if err != nil { panic(err); }
-//	out.Write([]byte(reply.Data));
-
-//	out.Write(pages.BackLink.Client.Call);
-//	out.Write(pages.BackLink.Client.FetchStatusJSON());

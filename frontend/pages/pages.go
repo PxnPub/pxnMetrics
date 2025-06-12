@@ -4,18 +4,18 @@ import(
 	Gorilla   "github.com/gorilla/mux"
 	HTML      "github.com/PxnPub/PxnGoCommon/utils/html"
 	WebServer "github.com/PxnPub/PxnGoCommon/utils/net/web"
-	BackLink  "github.com/PxnPub/pxnMetrics/frontend/backlink"
+	UtilsRPC  "github.com/PxnPub/PxnGoCommon/rpc"
 );
 
 
 
 type Pages struct {
-	Link *BackLink.BackLink
+	Link *UtilsRPC.Client
 }
 
 
 
-func New(router *Gorilla.Router, backlink *BackLink.BackLink) *Pages {
+func New(router *Gorilla.Router, backlink *UtilsRPC.Client) *Pages {
 	pages := Pages{
 		Link: backlink,
 	};

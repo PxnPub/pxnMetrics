@@ -22,8 +22,9 @@ type HeartBeat struct {
 }
 
 type ShardState struct {
-	IsOnline bool
-	LastSeen Time.Time
+	IsOnline  bool
+	LastSeen  Time.Time
+	LastBatch Time.Time
 }
 
 

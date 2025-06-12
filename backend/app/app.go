@@ -24,6 +24,7 @@ type AppBackend struct {
 	HeartBeat *HeartBeat.HeartBeat
 	UpLink    *UtilsRPC.Server
 	Bind      string
+	FrontAPI  *HeartBeat.API_Front
 }
 
 
@@ -35,7 +36,7 @@ func New(version string) Service.App {
 }
 
 func (app *AppBackend) Main() {
-	app.Service := Service.New();
+	app.Service = Service.New();
 	app.Service.Start();
 	var flag_num_shards     int;
 	var flag_bind           string;
@@ -64,10 +65,8 @@ func (app *AppBackend) Main() {
 	app.HeartBeat = HeartBeat.New(app.Service, num_shards);
 	// rpc server
 	app.UpLink = UtilsRPC.NewServer(app.Service, app.Bind);
-	FrontAPI.RegisterWebFrontAPIServer(
-		app.UpLink.RPC,
-		&API_Front{},
-	);
+	app.API_Front = HeartBeat.NewFrontAPI(app.HeartBeat);
+	FrontAPI.RegisterWebFrontAPIServer(app.UpLink.RPC, app.API_Front);
 	// start things
 	if err := app.HeartBeat.Start(); err != nil { Log.Panic(err); }
 	if err := app.UpLink.Start();    err != nil { Log.Panic(err); }
