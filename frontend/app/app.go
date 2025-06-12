@@ -7,14 +7,14 @@ import(
 	Service   "github.com/PxnPub/PxnGoCommon/service"
 	Flagz     "github.com/PxnPub/PxnGoCommon/utils/flagz"
 	WebServer "github.com/PxnPub/PxnGoCommon/utils/net/web"
+	BackLink  "github.com/PxnPub/pxnMetrics/frontend/backlink"
 	Pages     "github.com/PxnPub/pxnMetrics/frontend/pages"
-	WebLink   "github.com/PxnPub/pxnMetrics/frontend/weblink"
 );
 
 
 
 type AppFrontend struct {
-	Version string
+	Version  string
 }
 
 
@@ -29,20 +29,28 @@ func (app *AppFrontend) Main() {
 	service := Service.New();
 	service.Start();
 	// flags
-	var flag_bind   string;
-	var flag_broker string;
-	Flagz.String(&flag_bind,   "bind",   WebServer.DefaultBindWeb);
-	Flagz.String(&flag_broker, "broker", DefaultBrokerAddress    );
+	var bind   string;
+	var broker string;
+	Flagz.String(&bind,   "bind",   WebServer.DefaultBindWeb);
+	Flagz.String(&broker, "broker", DefaultBrokerAddress    );
 	Flag.Parse();
 	// rpc to broker
-	weblink := WebLink.New(service, flag_broker);
+	backlink := BackLink.New(service, broker);
+
+//	app.BackLink = UtilsRPC.NewBackLink(broker);
+
+
+
+
+
+//	weblink := WebLink.New(service, broker);
 	// web server
-	webserv := WebServer.NewWebServer(flag_bind);
+	webserv := WebServer.NewWebServer(bind);
 	webserv.WaitGroup = service.WaitGroup;
 	service.AddCloseable(webserv);
-	Pages.New(webserv.Router, weblink)
+	Pages.New(webserv.Router, backlink);
 	// start things
-	if err := weblink.Start(); err != nil { Log.Panic(err); }
-	if err := webserv.Start(); err != nil { Log.Panic(err); }
+	if err := backlink.Start(); err != nil { Log.Panic(err); }
+	if err := webserv.Start();  err != nil { Log.Panic(err); }
 	service.WaitUntilEnd();
 }

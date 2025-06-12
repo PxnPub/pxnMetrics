@@ -1,17 +1,20 @@
 package heartbeat;
 
 import(
-	Log     "log"
-	Time    "time"
-	Sync    "sync"
-	Utils   "github.com/PxnPub/PxnGoCommon/utils"
-	Service "github.com/PxnPub/PxnGoCommon/service"
+	Log      "log"
+	Time     "time"
+	Sync     "sync"
+	Utils    "github.com/PxnPub/PxnGoCommon/utils"
+	Service  "github.com/PxnPub/PxnGoCommon/service"
+//	UpLink   "github.com/PxnPub/pxnMetrics/backend/uplink"
+//	UtilsRPC "github.com/PxnPub/PxnGoCommon/utils/net/rpc"
 );
 
 
 
 type HeartBeat struct {
 	Service   *Service.Service
+//	UpLink    *UpLink.UpLink
 	MuxState  Sync.Mutex
 	TaskQueue chan Task
 	NumShards uint8
@@ -38,8 +41,11 @@ func (heart *HeartBeat) Start() error {
 	defer heart.MuxState.Unlock();
 	go heart.Serve();
 	Utils.SleepC();
+//	heart.UpLink.Start();
+	Utils.SleepC();
 	return nil;
 }
+//TODO: Close() also UpLink
 
 
 

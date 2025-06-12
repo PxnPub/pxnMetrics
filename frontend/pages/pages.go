@@ -4,20 +4,20 @@ import(
 	Gorilla   "github.com/gorilla/mux"
 	HTML      "github.com/PxnPub/PxnGoCommon/utils/html"
 	WebServer "github.com/PxnPub/PxnGoCommon/utils/net/web"
-	WebLink   "github.com/PxnPub/pxnMetrics/frontend/weblink"
+	BackLink  "github.com/PxnPub/pxnMetrics/frontend/backlink"
 );
 
 
 
 type Pages struct {
-	WebLink *WebLink.WebLink
+	Link *BackLink.BackLink
 }
 
 
 
-func New(router *Gorilla.Router, weblink *WebLink.WebLink) *Pages {
+func New(router *Gorilla.Router, backlink *BackLink.BackLink) *Pages {
 	pages := Pages{
-		WebLink: weblink,
+		Link: backlink,
 	};
 	WebServer.AddStaticRoute(router);
 	router.HandleFunc("/",            pages.PageWeb_Global);

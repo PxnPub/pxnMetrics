@@ -1,9 +1,13 @@
 package pages;
 
 import(
-	HTTP      "net/http"
-	Template  "html/template"
-	HTML      "github.com/PxnPub/PxnGoCommon/utils/html"
+//	Context  "context"
+	HTTP     "net/http"
+	Template "html/template"
+	Context  "context"
+	HTML     "github.com/PxnPub/PxnGoCommon/utils/html"
+	// api
+//	FrontAPI "github.com/PxnPub/pxnMetrics/api/front"
 );
 
 
@@ -36,5 +40,18 @@ build.IsDev = true;
 
 func (pages *Pages) PageAPI_Status(out HTTP.ResponseWriter, in *HTTP.Request) {
 	HTML.SetContentType(out, "json");
-	out.Write(pages.WebLink.FetchStatusJSON());
+	result, err := pages.Link.Client.FetchStatusJSON(
+		Context.Background(),
+		nil,
+	);
+	if err != nil { panic(err); }
+	out.Write([]byte(result.Data));
 }
+//	api := FrontAPI.NewWebFrontAPIClient(pages.BackLink.Client);
+//api.FetchStatusJSON(Context.Background(), &FrontAPI.Empty{});
+//	reply, err := api.FetchStatusJSON(Context.Background(), &FrontAPI.Empty{});
+//	if err != nil { panic(err); }
+//	out.Write([]byte(reply.Data));
+
+//	out.Write(pages.BackLink.Client.Call);
+//	out.Write(pages.BackLink.Client.FetchStatusJSON());
