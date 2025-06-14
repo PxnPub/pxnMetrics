@@ -1,0 +1,17 @@
+syntax = "proto3";
+package shard;
+option go_package = "github.com/PxnPub/pxnMetrics/api/shard";
+
+service ShardPingPong {
+	rpc Ping(ShardPing) returns (ShardPong);
+}
+
+message ShardPing{
+	map<uint64, uint32> TokenBucket = 1;
+	repeated uint64 ServerUID = 2;
+}
+
+message ShardPong{
+	map<uint64, uint32> TokenBucket = 1;
+	repeated uint64 ServerUID = 2;
+}

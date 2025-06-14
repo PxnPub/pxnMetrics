@@ -5,10 +5,11 @@ import(
 	HTTP     "net/http"
 	Template "html/template"
 	Context  "context"
-	JSON     "encoding/json"
+//	JSON     "encoding/json"
 	Runtime  "runtime"
+	GRPC     "google.golang.org/grpc"
+	GZIP     "google.golang.org/grpc/encoding/gzip"
 	HTML     "github.com/PxnPub/PxnGoCommon/utils/html"
-	// api
 	FrontAPI "github.com/PxnPub/pxnMetrics/api/front"
 );
 
@@ -42,8 +43,13 @@ build.IsDev = true;
 
 func (pages *Pages) PageAPI_Status(out HTTP.ResponseWriter, in *HTTP.Request) {
 	HTML.SetContentType(out, "json");
-	api := FrontAPI.NewWebFrontAPIClient(pages.Link.RPC);
-	result, err := api.FetchStatusJSON(Context.Background(), &FrontAPI.Empty{});
+	result, err := pages.FrontAPI.FetchStatusJSON(
+		Context.Background(),
+		&FrontAPI.Empty{},
+//TODO: optional? only when not unix socket?
+		GRPC.UseCompressor(GZIP.Name),
+	);
+//TODO: make this into a function?
 	if err != nil {
 		trace := make([]byte, 1024);
 		n := Runtime.Stack(trace, true);
@@ -53,6 +59,7 @@ func (pages *Pages) PageAPI_Status(out HTTP.ResponseWriter, in *HTTP.Request) {
 		);
 		return;
 	}
-	out.WriteHeader(HTTP.StatusOK)
-	JSON.NewEncoder(out).Encode(result.Data);
+	out.WriteHeader(HTTP.StatusOK);
+	out.Write(result.Data);
+//	JSON.NewEncoder(out).Encode(result.Data);
 }

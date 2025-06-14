@@ -15,12 +15,13 @@ import(
 
 
 type AppFrontend struct {
-	Version  string
-	Service  *Service.Service
-	BackLink *UtilsRPC.Client
-	WebServe *WebServer.WebServer
-	Bind     string
-	Remote   string
+	Version    string
+	Service    *Service.Service
+	BackLink   *UtilsRPC.Client
+	WebServer  *WebServer.WebServer
+	Pages      *Pages.Pages
+	BindAddr   string
+	BrokerAddr string
 }
 
 
@@ -32,30 +33,29 @@ func New(version string) Service.App {
 }
 
 func (app *AppFrontend) Main() {
-	service := Service.New();
-	service.Start();
+	app.Service = Service.New();
+	app.Service.Start();
 	// flags
 	var flag_bind   string;
-	var flag_remote string;
+	var flag_broker string;
 	Flagz.String(&flag_bind,   "bind",   WebServer.DefaultBindWeb);
-	Flagz.String(&flag_remote, "broker", DefaultBrokerAddress    );
+	Flagz.String(&flag_broker, "broker", DefaultBrokerAddress    );
 	Flag.Parse();
-	app.Bind   = flag_bind;
-	app.Remote = flag_remote;
+	app.BindAddr   = flag_bind;
+	app.BrokerAddr = flag_broker;
 	// rpc to broker
-	app.BackLink = UtilsRPC.NewClient(service, app.Remote);
+	app.BackLink = UtilsRPC.NewClient(app.Service, app.BrokerAddr);
 
 //	client := FrontAPI.NewWebFrontAPIClient(app.BackLink.RPC);
 
-
-
 	// web server
-	app.WebServe = WebServer.NewWebServer(app.Bind);
-	app.WebServe.WaitGroup = service.WaitGroup;
-	service.AddCloseable(app.WebServe);
-	Pages.New(app.WebServe.Router, app.BackLink);
+	app.WebServer = WebServer.NewWebServer(app.BindAddr);
+	app.WebServer.WaitGroup = app.Service.WaitGroup;
+	app.Service.AddCloseable(app.WebServer);
+	app.Pages = Pages.New(app.WebServer.Router);
 	// start things
-	if err := app.BackLink.Start(); err != nil { Log.Panic(err); }
-	if err := app.WebServe.Start();  err != nil { Log.Panic(err); }
-	service.WaitUntilEnd();
+	if err := app.BackLink.Start();  err != nil { Log.Panic(err); }
+	app.Pages.Init(app.BackLink);
+	if err := app.WebServer.Start(); err != nil { Log.Panic(err); }
+	app.Service.WaitUntilEnd();
 }

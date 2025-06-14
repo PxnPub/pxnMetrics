@@ -1,3 +1,3 @@
 package main;
 
-const Version = "{{{VERSION}}}";
+const Version = "0.1.1";

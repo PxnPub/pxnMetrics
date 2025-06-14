@@ -5,20 +5,20 @@ import(
 	HTML      "github.com/PxnPub/PxnGoCommon/utils/html"
 	WebServer "github.com/PxnPub/PxnGoCommon/utils/net/web"
 	UtilsRPC  "github.com/PxnPub/PxnGoCommon/rpc"
+	FrontAPI  "github.com/PxnPub/pxnMetrics/api/front"
 );
 
 
 
 type Pages struct {
-	Link *UtilsRPC.Client
+	Link     *UtilsRPC.Client
+	FrontAPI FrontAPI.WebFrontAPIClient
 }
 
 
 
-func New(router *Gorilla.Router, backlink *UtilsRPC.Client) *Pages {
-	pages := Pages{
-		Link: backlink,
-	};
+func New(router *Gorilla.Router) *Pages {
+	pages := Pages{};
 	WebServer.AddStaticRoute(router);
 	router.HandleFunc("/",            pages.PageWeb_Global);
 	router.HandleFunc("/wiki/",       pages.PageWeb_Wiki  );
@@ -26,6 +26,11 @@ func New(router *Gorilla.Router, backlink *UtilsRPC.Client) *Pages {
 	router.HandleFunc("/api/status/", pages.PageAPI_Status);
 	router.HandleFunc("/about/",      pages.PageWeb_About );
 	return &pages;
+}
+
+func (pages *Pages) Init(backlink *UtilsRPC.Client) {
+	pages.Link     = backlink;
+	pages.FrontAPI = FrontAPI.NewWebFrontAPIClient(backlink.RPC);
 }
 
 

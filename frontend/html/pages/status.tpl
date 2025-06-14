@@ -1,6 +1,6 @@
 
 <!-- Broker Offline -->
-<div id="broker-offline-alert" class="alert alert-danger alert-dismissible" style="display: none;" role="alert">
+<div id="broker-offline-alert" class="alert alert-danger fade show" style="display: none;" role="alert">
 	<h2>
 		<i class="bi bi-exclamation-triangle-fill"></i>
 		Connection to broker has failed
@@ -46,8 +46,8 @@ margin-bottom: 30px; margin-left: auto; margin-right: auto;">
 			</div>-->
 			<!-- Request Stats -->
 			<table>
-				<tr><td align="right">Last&nbsp;Batch:</td><td width="8px"></td>
-					<td align="left" class="shard-last-batch fs-5">&lt;Last-Batch&gt;</td></tr>
+				<tr><td align="right" class="shard-last-batch-title">Last&nbsp;Batch:</td><td width="8px"></td>
+					<td align="left" class="shard-last-batch-value fs-5">&lt;Last-Batch&gt;</td></tr>
 				<tr><td align="right" class="shard-requests">Requests:</td><td></td>
 					<td align="left" class="shard-queue-waiting fs-5">&lt;Queued&gt;</td></tr>
 				<tr><td></td><td></td>

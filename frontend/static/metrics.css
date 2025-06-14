@@ -75,6 +75,7 @@ body {
 	border-width: 1px;
 	border-style: solid;
 	border-color: #917B78;
+	filter: drop-shadow(5px 5px 4px #555);
 }
 
 .shard-status-button {
@@ -82,6 +83,7 @@ body {
 	border-width: 1px;
 	border-style: solid;
 	border-color: #655553;
+	box-shadow: inset 1px 1px 4px black;
 }
 
 .shard-status-template table {

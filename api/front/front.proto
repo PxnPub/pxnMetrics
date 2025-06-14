@@ -1,6 +1,5 @@
-package front;
-
 syntax = "proto3";
+package front;
 option go_package = "github.com/PxnPub/pxnMetrics/api/front";
 
 service WebFrontAPI {
@@ -10,5 +9,5 @@ service WebFrontAPI {
 message Empty{}
 
 message StatusJSON {
-	[]byte Data = 1;
+	bytes Data = 1;
 }

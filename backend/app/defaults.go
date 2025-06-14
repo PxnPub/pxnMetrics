@@ -4,5 +4,6 @@ package app;
 
 
 const DefaultNumShards     = 1;
+const DefaultChecksumInit  = 0;
 const DefaultBatchInterval = "5s";
 const DefaultBind          = "tcp://127.0.0.1:9901";

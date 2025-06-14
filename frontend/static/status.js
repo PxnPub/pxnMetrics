@@ -1,7 +1,7 @@
 
 const shard_status_container = document.getElementById('shard-status-container');
 const shard_status_template  = document.querySelector('.shard-status-template');
-var offline_alert_timeout = null;
+var offline_alert_timer = 1;
 
 function FetchAndUpdateStatus() {
 	if (!shard_status_container) console.error('class not found: .shard-status-container');
@@ -15,26 +15,30 @@ function FetchAndUpdateStatus() {
 			UpdateStatus(json);
 		})
 		.catch(err => {
-			UpdateStatusOffline();
+			SetStatusOffline();
 			console.log('Fetch error: ', err)
 		});
 }
 
-function UpdateStatusOffline() {
-	if (offline_alert_timeout !== null) {
-		clearInterval(offline_alert_timeout);
-		offline_alert_timeout = null;
+function SetStatusOffline() {
+	if (offline_alert_timer !== null) {
+		clearInterval(offline_alert_timer);
+		offline_alert_timer = null;
 	}
-	document.getElementById('broker-offline-alert').style.display = 'block';
+	document.getElementById('broker-offline-warning').style.display = 'none';
+	document.getElementById('broker-offline-alert'  ).style.display = 'block';
 }
 
-function UpdateStatusOfflineReset() {
-	document.getElementById('broker-offline-alert').style.display = 'none';
+function ResetStatusOffline() {
+	document.getElementById('broker-offline-warning').style.display = 'none';
+	document.getElementById('broker-offline-alert'  ).style.display = 'none';
 }
 
 function UpdateStatus(json) {
-	if (offline_alert_timeout === null) {
-		offline_alert_timeout = setInterval(UpdateStatusOfflineReset, 10000);
+	if (offline_alert_timer === null) {
+		offline_alert_timer = setInterval(ResetStatusOffline, 10000);
+		document.getElementById('broker-offline-warning').style.display = 'block';
+		document.getElementById('broker-offline-alert'  ).style.display = 'none';
 	}
 	const frags = document.createDocumentFragment();
 	json.Shards.forEach(entry => {
@@ -42,7 +46,9 @@ function UpdateStatus(json) {
 		clone.style.display = 'block';
 		clone.querySelector('.shard-name').textContent = entry.Name;
 		UpdateStatusButton   (entry, clone.querySelector('.shard-status-button'));
-		UpdateStatusLastBatch(entry, clone.querySelector('.shard-last-batch'   ));
+		UpdateStatusLastBatch(entry,
+			clone.querySelector('.shard-last-batch-title'),
+			clone.querySelector('.shard-last-batch-value'));
 		UpdateStatusWaiting  (entry, clone.querySelector('.shard-requests'),
 			clone.querySelector('.shard-queue-waiting'));
 		UpdateStatusPerPeriod(entry, clone.querySelector('.shard-req-sec-min'  ));
@@ -77,11 +83,17 @@ function UpdateStatusButton(entry, field) {
 	}
 }
 
-function UpdateStatusLastBatch(entry, field) {
-	field.innerHTML = FormatUptimeSeconds(entry.LastBatch) + (
-		(entry.BatchWaiting === 0 && entry.Status === 'Offline') ? ''
-		: ` <font size="-1">(` + entry.BatchWaiting + `&nbsp;waiting)</font>`
-	);
+function UpdateStatusLastBatch(entry, title, field) {
+	if (entry.Status === 'Offline' && entry.LastBatch === 0) {
+		title.style.display = 'none';
+		field.textContent = '';
+	} else {
+		title.style.display = 'block';
+		field.innerHTML = FormatUptimeSeconds(entry.LastBatch) + (
+			(entry.BatchWaiting === 0 && entry.Status === 'Offline') ? ''
+			: ` <font size="-1">(` + entry.BatchWaiting + `&nbsp;waiting)</font>`
+		);
+	}
 }
 
 function UpdateStatusWaiting(entry, fieldA, fieldB) {
