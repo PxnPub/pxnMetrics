@@ -7,7 +7,7 @@ import(
 	Service  "github.com/PxnPub/PxnGoCommon/service"
 	Flagz    "github.com/PxnPub/PxnGoCommon/utils/flagz"
 	UtilsRPC "github.com/PxnPub/PxnGoCommon/rpc"
-	Proc     "github.com/PxnPub/pxnMetrics/shard/processor"
+	Worker   "github.com/PxnPub/pxnMetrics/shard/worker"
 );
 
 
@@ -18,7 +18,7 @@ type AppShard struct {
 	BackLink   *UtilsRPC.Client
 	BindPublic string
 	BrokerAddr string
-	Proc       *Proc.Processor
+	Worker     *Worker.Worker
 }
 
 
@@ -43,10 +43,12 @@ func (app *AppShard) Main() {
 	// rpc to broker
 	app.BackLink = UtilsRPC.NewClient(app.Service, app.BrokerAddr);
 	// public listener
-	app.Worker = Worker.New();
+	app.Worker = Worker.New(app.Service, app.BindPublic);
+//TODO
+	app.Worker.ChecksumSeed = 9001;
+//	app.Proc = Proc.NewProcessor(app.BackLink);
 	// start things
 	if err := app.BackLink.Start(); err != nil { Log.Panic(err); }
-	app.Worker.Init(app.BackLink);
-	if err := app.Worker.Start();   err != nil { Log.Panic(err); }
+	if err := app.Proc.Start();     err != nil { Log.Panic(err); }
 	app.Service.WaitUntilEnd();
 }
